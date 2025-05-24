@@ -20,6 +20,7 @@ public class CategoryDto {
     private Date createdOn;
     private Integer updateBy;
     private Date updatedOn;
+    private Boolean isDeleted;
 
     public int getId() {
         return id;
@@ -47,6 +48,14 @@ public class CategoryDto {
 
     public Boolean getActive() {
         return isActive;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 
     public void setActive(Boolean active) {
