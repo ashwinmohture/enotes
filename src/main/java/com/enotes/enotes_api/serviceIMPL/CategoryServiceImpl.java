@@ -3,6 +3,7 @@ package com.enotes.enotes_api.serviceIMPL;
 import com.enotes.enotes_api.dto.CategoryDto;
 import com.enotes.enotes_api.dto.CategoryResponse;
 import com.enotes.enotes_api.entity.Category;
+import com.enotes.enotes_api.exception.ResourceNotFoundException;
 import com.enotes.enotes_api.repository.CategoryRepository;
 import com.enotes.enotes_api.service.CategoryService;
 import org.modelmapper.ModelMapper;
@@ -78,12 +79,21 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDto getCategoryById(Integer id) {
-       Optional<Category>findByCategory = categoryRepo.findByIdAndIsDeletedFalse(id);
-       if(findByCategory.isPresent()){
-           Category category =  findByCategory.get();
-           return mapper.map(category,CategoryDto.class);
-       }
+    public CategoryDto getCategoryById(Integer id) throws Exception {
+//       Optional<Category>findByCategory = categoryRepo.findByIdAndIsDeletedFalse(id);
+       Category category = categoryRepo.findByIdAndIsDeletedFalse(id).orElseThrow(()-> new ResourceNotFoundException("Category Not Found With ID =" + id));
+//       if(findByCategory.isPresent()){
+//           Category category =  findByCategory.get();
+//           return mapper.map(category,CategoryDto.class);
+//       }
+
+        // after exception Handler
+        if (!ObjectUtils.isEmpty(category)){
+            if (category.getName() == null) {
+                throw new IllegalArgumentException("Category name is null");
+            }
+            return mapper.map(category,CategoryDto.class);
+        }
         return null;
     }
 
