@@ -36,20 +36,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    // Validation message exceptions
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> HandleMethodArgumentNotValidException(MethodArgumentNotValidException e){
-        List<ObjectError> allError  = e.getBindingResult().getAllErrors();
-        Map<String, Object> error = new LinkedHashMap<>();
-         allError.stream().forEach(er->{
-             String message = er.getDefaultMessage();
-             String field = ((FieldError) (er)).getField();
-             error.put(field,message);
-         });
-
-
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<?> HandleValidationException(ValidationException e){
+        return new ResponseEntity<>(e.getError(), HttpStatus.BAD_REQUEST);
     }
+
+
 
 
 

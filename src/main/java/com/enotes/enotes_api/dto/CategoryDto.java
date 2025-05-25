@@ -18,17 +18,17 @@ import java.util.Date;
 public class CategoryDto {
     private int id;
 
-    @NotBlank
-    @Min(value = 10, message = "Min 10")
-    @Max(100)
+//    @NotBlank
+//    @Min(value = 10, message = "Min 10")
+//    @Max(100)
     private String name;
 
-    @NotBlank
-    @Min(value = 10, message = "Min 10")
-    @Max(100)
+//    @NotBlank
+//    @Min(value = 10, message = "Min 10")
+//    @Max(100)
     private String descriptions;
 
-    @NotNull
+//    @NotNull
     private Boolean isActive;
     private Integer createdBy;
     private Date createdOn;

@@ -4,8 +4,10 @@ import com.enotes.enotes_api.dto.CategoryDto;
 import com.enotes.enotes_api.dto.CategoryResponse;
 import com.enotes.enotes_api.entity.Category;
 import com.enotes.enotes_api.exception.ResourceNotFoundException;
+import com.enotes.enotes_api.exception.ValidationException;
 import com.enotes.enotes_api.repository.CategoryRepository;
 import com.enotes.enotes_api.service.CategoryService;
+import com.enotes.enotes_api.util.Validation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,12 +27,18 @@ public class CategoryServiceImpl implements CategoryService {
     private ModelMapper mapper;
     @Autowired
     private CategoryRepository categoryRepo;
+
+    @Autowired
+    private Validation validation;
+
     @Override
     public Boolean saveCategory(CategoryDto categoryDto) {
 //        Category category = new Category();
 //        category.setName(categoryDto.getName());
 //        category.setDescriptions(categoryDto.getDescriptions());
 //        category.setActive(categoryDto.getActive());
+        // Validation checking
+        validation.categoryValidation(categoryDto);
 
         Category category = mapper.map(categoryDto,Category.class);
         // Ensure isDeleted and created is never null
@@ -39,7 +47,6 @@ public class CategoryServiceImpl implements CategoryService {
             category.setCreatedBy(1);
         }
         if(ObjectUtils.isEmpty(category.getId())){
-            category.setCreatedBy(1);
             category.setCreatedOn(new Date());
         }else{
             updateCategory(category);
