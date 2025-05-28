@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -39,6 +40,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<?> HandleValidationException(ValidationException e){
         return new ResponseEntity<>(e.getError(), HttpStatus.BAD_REQUEST);
+    }
+
+    // exist category validation handler
+    @ExceptionHandler(ExistDataException.class)
+    public ResponseEntity<?> HandleExistDataException(ExistDataException e){
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    // exist category validation handler
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<?> HandleHttpMessageNotReadableException(HttpMessageNotReadableException e){
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
 
