@@ -1,37 +1,33 @@
 package com.enotes.enotes_api.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.util.Date;
 
 @Getter
 @Setter
 @MappedSuperclass
-public class BaseModel {
-    private Boolean isActive;
-    private Boolean isDeleted;
+public abstract class BaseModel {
+
+    @CreatedBy
+    @Column(updatable = false)
     private Integer createdBy;
+    @CreatedDate
+    @Column(updatable = false)
     private Date createdOn;
+    @LastModifiedBy
+    @Column(insertable = false)
     private Integer updateBy;
+    @Column(insertable = true)
+    @LastModifiedDate
     private Date updatedOn;
-
-    public Boolean getActive() {
-        return isActive;
-    }
-
-    public void setActive(Boolean active) {
-        isActive = active;
-    }
-
-    public Boolean getDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        isDeleted = deleted;
-    }
 
     public Integer getCreatedBy() {
         return createdBy;
@@ -68,8 +64,6 @@ public class BaseModel {
     @Override
     public String toString() {
         return "BaseModel{" +
-                "isActive=" + isActive +
-                ", isDeleted=" + isDeleted +
                 ", createdBy=" + createdBy +
                 ", createdOn=" + createdOn +
                 ", updateBy=" + updateBy +

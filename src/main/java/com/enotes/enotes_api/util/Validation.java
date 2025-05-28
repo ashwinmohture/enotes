@@ -13,38 +13,70 @@ import java.util.Observer;
 public class Validation {
     public void categoryValidation(CategoryDto categoryDto){
 
+//        Map<String, Object> error = new LinkedHashMap<>();
+//
+//        if (ObjectUtils.isEmpty(categoryDto)){
+//            throw new IllegalArgumentException("category object/json should not be null");
+//        }else {
+//            // validation name
+//            if (ObjectUtils.isEmpty((categoryDto.getName()))){
+//                error.put("name","name field is not empty or null");
+//            }else {
+//                if (categoryDto.getName().length() < 3){
+//                    error.put("name","Length name min 3");
+//                }
+//                if (categoryDto.getName().length() > 100){
+//                    error.put("name","Length name max 3");
+//                }
+//            }
+//        }
+//            // validation Descriptions
+//        if (ObjectUtils.isEmpty((categoryDto.getDescriptions()))){
+//            error.put("Descriptions","Descriptions field is not empty or null");
+//        }
+//        // validation isActive
+//        if (ObjectUtils.isEmpty((categoryDto.getActive()))){
+//            error.put("isActive","isActive field is not empty or null");
+//        }else {
+//            if (categoryDto.getActive() != Boolean.TRUE.booleanValue()
+//                    && categoryDto.getActive() != Boolean.FALSE.booleanValue()){
+//                error.put("isActive","invalid value isActive field");
+//            }
+//        }
+//
+//        if (error.isEmpty()){
+//            throw new ValidationException(error);
+//        }
         Map<String, Object> error = new LinkedHashMap<>();
 
-        if (ObjectUtils.isEmpty(categoryDto)){
+        if (ObjectUtils.isEmpty(categoryDto)) {
             throw new IllegalArgumentException("category object/json should not be null");
-        }else {
-            // validation name
-            if (ObjectUtils.isEmpty((categoryDto.getName()))){
-                error.put("name","name field is not empty or null");
-            }else {
-                if (categoryDto.getName().length() < 3){
-                    error.put("name","Length name min 3");
+        } else {
+            // Validation: name
+            if (ObjectUtils.isEmpty(categoryDto.getName())) {
+                error.put("name", "name field must not be empty or null");
+            } else {
+                if (categoryDto.getName().length() < 3) {
+                    error.put("name", "Length of name must be at least 3 characters");
                 }
-                if (categoryDto.getName().length() > 100){
-                    error.put("name","Length name max 3");
+                if (categoryDto.getName().length() > 100) {
+                    error.put("name", "Length of name must not exceed 100 characters");
                 }
             }
-        }
-            // validation Descriptions
-        if (ObjectUtils.isEmpty((categoryDto.getDescriptions()))){
-            error.put("Descriptions","Descriptions field is not empty or null");
-        }
-        // validation isActive
-        if (ObjectUtils.isEmpty((categoryDto.getActive()))){
-            error.put("isActive","isActive field is not empty or null");
-        }else {
-            if (categoryDto.getActive() != Boolean.TRUE.booleanValue()
-                    && categoryDto.getActive() != Boolean.FALSE.booleanValue()){
-                error.put("isActive","invalid value isActive field");
+
+            // Validation: descriptions
+            if (ObjectUtils.isEmpty(categoryDto.getDescriptions())) {
+                error.put("descriptions", "descriptions field must not be empty or null");
+            }
+
+            // Validation: isActive
+            if (categoryDto.getActive() == null) {
+                error.put("isActive", "isActive field must not be null");
             }
         }
 
-        if (error.isEmpty()){
+        // FIXED: Only throw if there are errors
+        if (!error.isEmpty()) {
             throw new ValidationException(error);
         }
     }
