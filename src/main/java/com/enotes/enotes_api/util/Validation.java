@@ -1,6 +1,7 @@
 package com.enotes.enotes_api.util;
 
 import com.enotes.enotes_api.dto.CategoryDto;
+import com.enotes.enotes_api.dto.NotesDto;
 import com.enotes.enotes_api.exception.ValidationException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
@@ -78,6 +79,38 @@ public class Validation {
         // FIXED: Only throw if there are errors
         if (!error.isEmpty()) {
             throw new ValidationException(error);
+        }
+    }
+
+
+    // check validation for notes
+    public void NotesValidation(NotesDto notesDto){
+        Map<String,Object> errors = new LinkedHashMap<>();
+        if (ObjectUtils.isEmpty(notesDto)){
+            throw new IllegalArgumentException("Notes object/json should not be null");
+        }else {
+            // Validation for title
+            if(ObjectUtils.isEmpty(notesDto.getTitle())){
+                errors.put("Title", "title field must not be empty or null");
+            }else{
+                if (notesDto.getTitle().length() < 3) {
+                    errors.put("title", "Length of title must be at least 3 characters");
+                }
+                if (notesDto.getTitle().length() > 100) {
+                    errors.put("title", "Length of title must not exceed 100 characters");
+                }
+            }
+
+            // validation for description
+            if (ObjectUtils.isEmpty(notesDto.getDescription())){
+                errors.put("descriptions", "descriptions field must not be empty or null");
+            }
+
+            // FIXED: Only throw if there are errors
+            if (!errors.isEmpty()) {
+                throw new ValidationException(errors);
+            }
+
         }
     }
 
