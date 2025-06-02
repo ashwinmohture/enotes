@@ -1,7 +1,7 @@
 package com.enotes.enotes_api.util;
 
 import com.enotes.enotes_api.Handler.GenericResponse;
-import lombok.Builder;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -47,5 +47,23 @@ public class CommonUtil {
                 .build();
 
         return response.create();
+    }
+
+    public static String getContentType(String originalFileName) {
+        String extension = FilenameUtils.getExtension(originalFileName);
+        switch (extension){
+            case "pdf":
+                return "application/pdf";
+            case "xlsx":
+                return "application/vnd.openxmlformats-officedocument.spreadsheettml.sheet";
+            case "txt":
+                return "text/plan";
+            case "jpeg":
+                return "image/jpeg";
+            case "png":
+                return "image/png";
+            default:
+                return "appication/octet-strem";
+        }
     }
 }
