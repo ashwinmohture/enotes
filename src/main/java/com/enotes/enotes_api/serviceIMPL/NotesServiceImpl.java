@@ -63,7 +63,9 @@ public class NotesServiceImpl implements NotesService {
          if (existTitle){
              throw new ExistDataException("Title Already Exists");
          }
-
+         if (!ObjectUtils.isEmpty(notesDto.getId())){
+             updateNotes(notesDto,file);
+         }
          // check category
         checkCategoryExist(notesDto.getCategory());
 
@@ -73,7 +75,10 @@ public class NotesServiceImpl implements NotesService {
         if (!ObjectUtils.isEmpty(fileDtls)){
             notesMap.setFileDetails(fileDtls);
         }else{
-            notesMap.setFileDetails(null);
+            if (ObjectUtils.isEmpty(notesDto.getId())){
+                notesMap.setFileDetails(null);
+            }
+
         }
         Notes saveNotes = notesRepo.save(notesMap);
         if (!ObjectUtils.isEmpty(saveNotes)){
@@ -81,6 +86,15 @@ public class NotesServiceImpl implements NotesService {
         }
 
         return false;
+    }
+
+    private void updateNotes(NotesDto notesDto, MultipartFile file) throws Exception {
+        Notes existNotes = notesRepo.findById(notesDto.getId())
+                .orElseThrow(()->new ResourceNotFoundException("InvalidNotes id"));
+
+        if (ObjectUtils.isEmpty(file)){
+            notesDto.setFileDetails(mapper.map(existNotes.getFileDetails(), NotesDto.FileDto.class));
+        }
     }
 
     private FileDetails saveFileDetails(MultipartFile file) throws IOException {

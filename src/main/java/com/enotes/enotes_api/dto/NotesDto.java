@@ -25,6 +25,14 @@ public class NotesDto {
 
     private FileDto fileDetails;
 
+    public FileDto getFileDetails() {
+        return fileDetails;
+    }
+
+    public void setFileDetails(FileDto fileDetails) {
+        this.fileDetails = fileDetails;
+    }
+
     public Integer getId() {
         return null;
     }
