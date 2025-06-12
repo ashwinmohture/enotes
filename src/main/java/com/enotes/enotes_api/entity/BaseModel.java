@@ -1,45 +1,45 @@
 package com.enotes.enotes_api.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.util.Date;
 
 @Getter
 @Setter
 @MappedSuperclass
-public class BaseModel {
-    private Boolean isActive;
-    private Boolean isDeleted;
+public abstract class BaseModel {
+
+    @CreatedBy
+    @Column(updatable = false)
     private Integer createdBy;
+
+    @CreatedDate
+    @Column(updatable = false)
     private Date createdOn;
+
+    @LastModifiedBy
+    @Column(insertable = false)
     private Integer updateBy;
+
+    @LastModifiedDate
+    @Column(insertable = false)
     private Date updatedOn;
 
-    public Boolean getActive() {
-        return isActive;
-    }
-
-    public void setActive(Boolean active) {
-        isActive = active;
-    }
-
-    public Boolean getDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        isDeleted = deleted;
+    public void setCreatedBy(java.lang.Integer createdBy) {
+        this.createdBy = createdBy;
     }
 
     public Integer getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Integer createdBy) {
-        this.createdBy = createdBy;
-    }
 
     public Date getCreatedOn() {
         return createdOn;
@@ -65,12 +65,10 @@ public class BaseModel {
         this.updatedOn = updatedOn;
     }
 
-    @Override
-    public String toString() {
+    @java.lang.Override
+    public java.lang.String toString() {
         return "BaseModel{" +
-                "isActive=" + isActive +
-                ", isDeleted=" + isDeleted +
-                ", createdBy=" + createdBy +
+                "createdBy=" + createdBy +
                 ", createdOn=" + createdOn +
                 ", updateBy=" + updateBy +
                 ", updatedOn=" + updatedOn +
